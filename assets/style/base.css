@@ -25,8 +25,9 @@ q:before, q:after{ content:'' }
 sub, sup{ position:relative; vertical-align:baseline; font-size:75%; line-height:0 }
 sup{ top:-0.5em }
 sub{ bottom:-0.25em }
-a:link{ color:#08c }
-a:hover{ color:#08c; text-decoration:underline }
+a:link{ color:#f55 }
+a:visited{ color:#f55 }
+a:hover{ color:#f55; text-decoration:underline }
 ins, a{ text-decoration:none }
 code, kbd, pre, samp{ font-size:1em; font-family:monospace, serif }
 a:hover, a:active{ -webkit-tap-highlight-color:rgba(0, 0, 0, 0); }
