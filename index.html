@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>首页</title>
+    <link rel="icon" type="image/png" href="assets/i/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+    <link rel="stylesheet" href="assets/script/codemirror/codemirror.css"/>
+    <link rel="stylesheet" href="assets/script/codemirror/theme/pastel-on-dark.css"/>
+    <link rel="stylesheet" href="assets/style/base.css"/>
+</head>
+<body>
+
+    <div class="m-cssfactory">
+        <div class="code-panel ui-tab">
+            <ul class="ui-tab-nav">
+                <li class="active">输入</li>
+                <li>结果</li>
+                <li class="f-fr">说明</li>
+                <li class="f-fr">留言</li>
+            </ul>
+            <div class="ui-tab-content active">
+                <textarea class="code-source" id="j_code_source"><!-- 贴上您的HTML代码 -->
+</textarea>
+            </div>
+            <div class="ui-tab-content">
+                <textarea class="code-result pastel-on-dark" id="j_code_result" spellcheck="false"></textarea>
+                <a id="j_btn_copy" class="btn-copy" data-clipboard-target="j_code_result">复制代码</a>
+            </div>
+            <div class="ui-tab-content">
+                <article class="m-about-plugin">
+                    <p>这是一个神（pǔ）奇（tōng）的工具。</p>
+                    <p>可将你贴进来的<code>HTML</code>代码转换成<code>Css</code>代码。如果你在使用中有遇到问题或有什么意见，可以到我的项目下Issues。  项目Github地址 <a href="https://github.com/worklinwu/HtmlConvertToCss">HtmlConvertToCss</a></p>
+                    <p>项目背后的故事 <a href="http://www.linwu.name/articles/csstools-htmlConvertToCss-intro.html">传送门</a></p>
+
+                </article>
+            </div>
+            <div class="ui-tab-content">
+                <div class="ds-thread" data-thread-key="Tools-CssFactory" data-title="样式生成工具" data-url="www.linwu.name/tools/cssFactory.html"></div>
+            </div>
+        </div>
+        <div class="factory-config">
+            <div class="ui-box">
+                <div class="ui-box-header">配置 <small></small></div>
+                <div class="ui-box-body">
+                    <form id="j_factory_config">
+                        <div class="form-group">
+                            <label for="top_level_class">顶级样式关键字 <small>(正则 / 用","分割 / 注意转义)</small></label>
+                            <input type="text" class="form-control" id="top_level_class" value="^\.m-" spellcheck="false">
+                        </div>
+                        <div class="form-group">
+                            <label for="no_extend_class">不继承的样式关键字 <small>(正则 / 用","分割 / 注意转义)</small></label>
+                            <input type="text" class="form-control" id="no_extend_class" value="ui-box, ui-tab" spellcheck="false">
+                        </div>
+                        <div class="form-group">
+                            <label for="status_class">状态样式<small>(用","分割)</small></label>
+                            <input type="text" class="form-control" id="status_class" value='show, hide, hidden, cur, current, open, close, active' spellcheck="false">
+                        </div>
+                        <div class="form-group">
+                            <label for="ignore_class">忽略的样式 <small>(正则 / 用","分割 / 注意转义)</small></label>
+                            <input type="text" class="form-control" id="ignore_class" value="^\.f-, ^\.j-, clearfix" spellcheck="false">
+                        </div>
+                        <div class="control-group">
+                            <button type="submit" class="btn" id="j_btn_analysis">解析代码</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="http://libs.baidu.com/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/script/codemirror/codemirror.js"></script>
+    <script type="text/javascript" src="assets/script/codemirror/mode/xml/xml.js"></script>
+    <script type="text/javascript" src="assets/script/cssFactory.js"></script>
+    <script type="text/javascript" src="assets/script/ZeroClipboard/ZeroClipboard.min.js"></script>
+    <script type="text/javascript" src="assets/script/common.js"></script>
+    <script type="text/javascript">
+
+        // 多说
+        var duoshuoQuery = {short_name: "linwu"};
+        (function () {
+            var ds = document.createElement('script');
+            ds.type = 'text/javascript';
+            ds.async = true;
+            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            ds.charset = 'UTF-8';
+            (document.getElementsByTagName('head')[0]
+                    || document.getElementsByTagName('body')[0]).appendChild(ds);
+        })();
+    </script>
+</body>
+</html>
+
+
