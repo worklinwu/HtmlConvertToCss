@@ -80,7 +80,7 @@
             // 1. 获取输入的html文本.
             _this.html_code = $code_source.val().replace(/src=['|"].*['|"]/ig, "").replace(/<!--.*-->/ig, "");
             // 2. 解析成Dom元素, 放入内存中.
-            if (!_this.html_code.trim()) {
+            if(!_this.html_code.trim()){
                 return;
             }
             _this.html_code_dom = $(_this.html_code);
@@ -150,8 +150,8 @@
                             _this.result_css.push("#" + cur_json.id);
                         }
                     }
-                    // 生成class规则  (包含忽略的元素, 用标签来继承)
-                    if (cur_json.class && cur_json.class.trim() != "" && !_this.tools.inArrayByRegExp(cur_json.class.split(/\s+/)[0], _this.options.arr_ignore_class)) {
+                    // 生成class规则
+                    if (cur_json.class && cur_json.class.trim() != "") {
                         for (var j = 0; j < class_arr.length; j++) {
                             // 解析class
                             if ($.inArray(class_arr[j], _this.options.arr_status_class) > -1 && class_arr.length > 1) {
@@ -185,9 +185,8 @@
                     _cur_css = _this.result_css[i];
                     _cur_arr = _cur_css.trim().split(/\s+/);
                     // 过滤忽略的样式
-                    if (_this.tools.inArrayByRegExp(_cur_arr[_cur_arr.length - 1], _this.options.arr_ignore_class)) {
+                    if (_this.tools.inArrayByRegExp(_cur_arr[_cur_arr.length - 1].substr(1), _this.options.arr_ignore_class)) {
                         _this.result_css.splice(i, 1);
-                        i--;
                         continue;
                     }
                     // 过滤顶级样式前面的继承链
@@ -197,9 +196,9 @@
                             break;
                         }
                     }
-                    // 过滤不继承的样式 (忽略样式也是不继承样式)
+                    // 过滤不继承的样式
                     for (var k = 0; k < _cur_arr.length;) {
-                        if (_this.tools.inArrayByRegExp(_cur_arr[k], _this.options.arr_no_extend_class) || _this.tools.inArrayByRegExp(_cur_arr[k], _this.options.arr_ignore_class) && k != _cur_arr.length - 1) {
+                        if (_this.tools.inArrayByRegExp(_cur_arr[k], _this.options.arr_no_extend_class) && k != _cur_arr.length - 1) {
                             _cur_arr.splice(k, 1);
                         } else {
                             k++;
