@@ -37,54 +37,54 @@ Html转Css 小工具
 ---------------------------------------
 
 ### 配置说明
-- 顶级样式关键字
-    例如`^.m-`    
-    ```html
-    <div class="demo">
-        <div class="m-box">
-        </div>
+#### 顶级样式关键字
+例如`^.m-`    
+```html
+<div class="demo">
+    <div class="m-box">
     </div>
-    ```  
-    转换后生成 (忽略前面的`demo`的样式继承)  
-    ```css
-    .m-box{}
-    ```
-- 不继承的样式关键字
-    排除一些已经定义过的样式，例如`ui-box`   
-    ```html
-    <div class="demo">
-        <div class="ui-box">
-        </div>
+</div>
+```  
+转换后生成 (忽略前面的`demo`的样式继承)  
+```css
+.m-box{}
+```
+#### 不继承的样式关键字
+排除一些已经定义过的样式，例如`ui-box`   
+```html
+<div class="demo">
+    <div class="ui-box">
     </div>
+</div>
+```   
+转换后生成   
+```css
+.demo{}
+```
+#### 状态样式
+多样式的处理，例如`ui-box`   
+```html
+<div class="demo">
+    <div class="ui-box active">
+    </div>
+</div>
+```  
+转换后生成   
+```css
+.demo{}
+.demo .ui-box{}
+.demo .ui-box.active{}
     ```   
-    转换后生成   
-    ```css
-    .demo{}
-    ```
-- 状态样式
-    多样式的处理，例如`ui-box`   
-    ```html
-    <div class="demo">
-        <div class="ui-box active">
-        </div>
-    </div>
-    ```  
-    转换后生成   
-    ```css
-    .demo{}
-    .demo .ui-box{}
-    .demo .ui-box.active{}
-    ```   
-- 忽略的样式    
-    例如`ui-box`   
-    ```html
-    <div class="demo clearfix">
-    </div>
-    ```  
-    转换后生成   
-    ```css
-    .demo{}
-    ```   
+#### 忽略的样式    
+例如`ui-box`   
+```html
+<div class="demo clearfix">
+</div>
+```  
+转换后生成   
+```css
+.demo{}
+```   
 
 ------------------------------
 
