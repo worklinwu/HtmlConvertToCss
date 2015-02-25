@@ -184,6 +184,13 @@
                 for (var i = 0; i < _this.result_css.length; i++) {
                     _cur_css = _this.result_css[i];
                     _cur_arr = _cur_css.trim().split(/\s+/);
+                    _cur_arr_last = _cur_arr[_cur_arr.length - 1];
+                    // 过滤固定标签
+                    if (_cur_arr_last == "br") {
+                        _this.result_css.splice(i, 1);
+                        i--;
+                        continue;
+                    }
                     // 过滤忽略的样式
                     if (_this.tools.inArrayByRegExp(_cur_arr[_cur_arr.length - 1], _this.options.arr_ignore_class)) {
                         _this.result_css.splice(i, 1);

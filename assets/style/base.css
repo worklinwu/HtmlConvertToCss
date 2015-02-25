@@ -75,11 +75,13 @@ a:hover, a:active{ -webkit-tap-highlight-color:rgba(0, 0, 0, 0); }
 .m-cssfactory .factory-config .form-group{ margin-bottom:10px; }
 .m-cssfactory .factory-config .form-group label{ display:block; color:#333; font:12px/26px 'Microsoft YaHei', sans-serif; }
 .m-cssfactory .factory-config .form-group label small{ color:#f55;}
-.m-cssfactory .factory-config .form-group .form-control{outline:0; box-sizing:border-box; padding:5px 8px; width:100%; border:1px solid #ddd; color:#333; font:14px/18px "Helvetica Neue", Helvetica, Tahoma, Arial, sans-serif; }
-.m-cssfactory .factory-config .control-group{ padding-top:30px; }
-.m-cssfactory .factory-config .btn{ position:relative; display:block; width:100%; outline:0; border:0; background-color:#f55; color:#fff; text-align:center; font:20px/50px 'Microsoft YaHei', sans-serif;; cursor:pointer; }
+.m-cssfactory .factory-config .form-group .form-control{ height:30px; outline:0; box-sizing:border-box; padding:5px 8px; width:100%; border:1px solid #ddd; color:#333; font:14px/18px "Helvetica Neue", Helvetica, Tahoma, Arial, sans-serif; }
+.m-cssfactory .factory-config .control-group{ padding-top:30px; display:-webkit-box; display:box; }
+.m-cssfactory .factory-config .btn{ position:relative; display:block; outline:0; border:0; background-color:#f55; color:#fff; text-align:center; font:20px/50px 'Microsoft YaHei', sans-serif;; cursor:pointer; }
 .m-cssfactory .factory-config .btn:active{ top:2px; }
 .m-cssfactory .factory-config .btn.disabled{ background-color:#666; cursor:not-allowed; }
+.m-cssfactory .factory-config .btn-submit{ box-flex:1; -webkit-box-flex:1;}
+.m-cssfactory .factory-config .btn-reset{ width:50px; background:#c44 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAUVBMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////8IN+deAAAAGnRSTlMA2S0ZBPqmieTOj1FN9vDeglg8J0jJsZxyMAF6rcYAAACoSURBVCjPnVHZEoMgDAwoyiW0Yi/+/0MbzpTpgzPu02ZXkyyB65jNooRQi5lH3bJY8Qi/+hoJ25v0WxywNv3IH2oOwPWW+L3OTf0lLwX3WLC5DEYqUK+O6L+8kOlxkSUzhWwng2PpAaYWwE8tauoM3WGok+EgO02nVgyKQzoNz85zCsO6PSEE2QNKCggfi5XQuPKuRUSYk0fsDumEox+K2f/TOpdPexFfJXgR2tTWGwQAAAAASUVORK5CYII=) no-repeat 50% 50%;}
 
 .m-about-plugin{ padding:10px; background-color:#f8f8f8; }
 .m-about-plugin p{font:14px/1.7 'Microsoft YaHei',sans-serif; color:#555; margin-bottom:10px;}

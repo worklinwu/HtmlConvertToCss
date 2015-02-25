@@ -10,6 +10,12 @@ var $top_level_class = $("#top_level_class");
 var $no_extend_class = $("#no_extend_class");
 var $status_class = $("#status_class");
 var $ignore_class = $("#ignore_class");
+var input_default_config = {
+    "top_level_class": ["^\.m-"],
+    "no_extend_class": ["ui-box", "ui-tab"],
+    "status_class": ["show", "hide", "hidden", "cur", "current", "open", "close", "active"],
+    "ignore_class": ["^\.f-", "^\.j-", "clearfix"]
+};
 var input_config = {};
 
 $(function () {
@@ -25,8 +31,20 @@ $(function () {
             $no_extend_class.val(input_config.no_extend_class);
             $status_class.val(input_config.status_class);
             $ignore_class.val(input_config.ignore_class);
+            // jquery.tag-editor 初始化
+            $(".factory-config .form-control").tagEditor({placeholder: 'Enter tags ...'});
+        } else {
+            setDefaultValue();
         }
+    }else{
+        setDefaultValue();
     }
+
+    $("#j_btn_reset").on("click",function () {
+        setDefaultValue();
+        localStorage.setItem("cssFactory_input_config", JSON.stringify(input_default_config));
+    });
+
 
     $(".m-cssfactory .ui-tab-nav li").on("click", function () {
         var $this = $(this);
@@ -143,8 +161,18 @@ function initZeroClipboard() {
             $(event.target).text("已复制!").addClass("active");
             setTimeout(function () {
                 $(event.target).text("复制代码").removeClass("active");
-            },3000);
+            }, 3000);
             //console.log("Copied text to clipboard: " + event.data["text/plain"]);
         });
     });
+}
+
+function setDefaultValue() {
+    $top_level_class.val(input_default_config.top_level_class);
+    $no_extend_class.val(input_default_config.no_extend_class);
+    $status_class.val(input_default_config.status_class);
+    $ignore_class.val(input_default_config.ignore_class);
+    // jquery.tag-editor 初始化
+    $(".factory-config .form-control").tagEditor("destroy");
+    $(".factory-config .form-control").tagEditor({placeholder: 'Enter tags ...'});
 }
