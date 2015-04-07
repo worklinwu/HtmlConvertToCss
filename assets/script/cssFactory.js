@@ -60,7 +60,7 @@
             } else {
                 _this.options = $.extend({}, _this.options, _opts);
             }
-            console.log(_this.options);
+            //console.log(_this.options);
         },
         /**
          * 解析并输出htmlCode
@@ -83,21 +83,22 @@
             if (!_this.html_code.trim()) {
                 return;
             }
-            _this.html_code_dom = $(_this.html_code);
+            _this.html_code_dom = $("<div>" + _this.html_code + "</div>"); // 方便通过"children"计算代码块
             // 3. 遍历, 从外层往内层遍历, 将每个DOM元素的"标签名","id","class"的值保存到一个json格式的数组, 没个json对象有个"extend"的额外对象, 记录层级的深度.
             _this.options.beforeAnalysis && _this.options.beforeAnalysis.call(_this);
             convertHtmlToArr(_this.html_code_dom);
+            _this.result_json_arr.splice(0,1); // 删除前面加了一层辅助div
             _this.options.afterAnalysis && _this.options.afterAnalysis.call(_this);
             // 4. 输出
-            console.log(_this.result_json_arr);
+            //console.log(_this.result_json_arr);
             _this.options.beforeRender && _this.options.beforeRender.call(_this);
             analysisArr();
             filterResult();
             // 输出
             _this.result_css = _this.tools.arrUnique(_this.result_css);
-            $code_result.html("");
+            $code_result.val("");
             for (var k = 0; k < _this.result_css.length; k++) {
-                $code_result.append(_this.result_css[k] + "{} \r\n");
+                $code_result.val($code_result.val() + _this.result_css[k] + "{} \r\n");
             }
             _this.options.afterRender && _this.options.afterRender.call(_this);
 
@@ -181,6 +182,7 @@
             function filterResult() {
                 var _cur_css;
                 var _cur_arr;
+                var _cur_arr_last;
                 for (var i = 0; i < _this.result_css.length; i++) {
                     _cur_css = _this.result_css[i];
                     _cur_arr = _cur_css.trim().split(/\s+/);
@@ -198,7 +200,8 @@
                         continue;
                     }
                     // 过滤顶级样式前面的继承链
-                    for (var j = 0; j < _cur_arr.length; j++) {
+                    for (var j = _cur_arr.length - 1; j >= 0 ; j--) {
+                        console.log(_cur_arr[j] + ":" + _this.tools.inArrayByRegExp(_cur_arr[j], _this.options.arr_top_level_class));
                         if (_this.tools.inArrayByRegExp(_cur_arr[j], _this.options.arr_top_level_class)) {
                             _cur_arr.splice(0, j);
                             break;
