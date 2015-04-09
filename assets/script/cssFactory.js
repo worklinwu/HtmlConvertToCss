@@ -83,7 +83,7 @@
             if (!_this.html_code.trim()) {
                 return;
             }
-            _this.html_code_dom = $("<div>" + _this.html_code + "</div>"); // 方便通过"children"计算代码块
+            _this.html_code_dom = $("<div class='__temp__'>" + _this.html_code + "</div>"); // 方便通过"children"计算代码块
             // 3. 遍历, 从外层往内层遍历, 将每个DOM元素的"标签名","id","class"的值保存到一个json格式的数组, 没个json对象有个"extend"的额外对象, 记录层级的深度.
             _this.options.beforeAnalysis && _this.options.beforeAnalysis.call(_this);
             convertHtmlToArr(_this.html_code_dom);
@@ -154,7 +154,7 @@
                     // 生成class规则  (包含忽略的元素, 用标签来继承)
                     if (cur_json.class && cur_json.class.trim() != "" && !_this.tools.inArrayByRegExp(cur_json.class.split(/\s+/)[0], _this.options.arr_ignore_class)) {
                         for (var j = 0; j < class_arr.length; j++) {
-                            // 解析class
+                            // 解析class , 状态样式
                             if ($.inArray(class_arr[j], _this.options.arr_status_class) > -1 && class_arr.length > 1) {
                                 _this.result_css.push(cur_json_extend + class_arr[0] + "." + class_arr[j]);
                             } else {
@@ -185,7 +185,7 @@
                 var _cur_arr_last;
                 for (var i = 0; i < _this.result_css.length; i++) {
                     _cur_css = _this.result_css[i];
-                    _cur_arr = _cur_css.trim().split(/\s+/);
+                    _cur_arr = _cur_css.replace(/\.__temp__/ig,"").trim().split(/\s+/);
                     _cur_arr_last = _cur_arr[_cur_arr.length - 1];
                     // 过滤固定标签
                     if (_cur_arr_last == "br") {
