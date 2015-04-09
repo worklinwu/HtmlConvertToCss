@@ -98,7 +98,9 @@
             _this.result_css = _this.tools.arrUnique(_this.result_css);
             $code_result.val("");
             for (var k = 0; k < _this.result_css.length; k++) {
-                $code_result.val($code_result.val() + _this.result_css[k] + "{} \r\n");
+                if(_this.result_css[k].trim() != ""){
+                    $code_result.val($code_result.val() + _this.result_css[k] + "{} \r\n");
+                }
             }
             _this.options.afterRender && _this.options.afterRender.call(_this);
 
@@ -156,7 +158,7 @@
                         for (var j = 0; j < class_arr.length; j++) {
                             // 解析class , 状态样式
                             if ($.inArray(class_arr[j], _this.options.arr_status_class) > -1 && class_arr.length > 1) {
-                                _this.result_css.push(cur_json_extend + class_arr[0] + "." + class_arr[j]);
+                                _this.result_css.push(cur_json_extend + " ." + class_arr[0] + "." + class_arr[j]);
                             } else {
                                 _this.result_css.push(cur_json_extend + "." + class_arr[j]);
                             }
