@@ -203,7 +203,7 @@
                     }
                     // 过滤顶级样式前面的继承链
                     for (var j = _cur_arr.length - 1; j >= 0 ; j--) {
-                        console.log(_cur_arr[j] + ":" + _this.tools.inArrayByRegExp(_cur_arr[j], _this.options.arr_top_level_class));
+                        //console.log(_cur_arr[j] + ":" + _this.tools.inArrayByRegExp(_cur_arr[j], _this.options.arr_top_level_class));
                         if (_this.tools.inArrayByRegExp(_cur_arr[j], _this.options.arr_top_level_class)) {
                             _cur_arr.splice(0, j);
                             break;
