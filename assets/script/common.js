@@ -173,6 +173,10 @@ function setDefaultValue() {
     $status_class.val(input_default_config.status_class);
     $ignore_class.val(input_default_config.ignore_class);
     // jquery.tag-editor 初始化
-    $(".factory-config .form-control").tagEditor("destroy");
+    try{
+        $(".factory-config .form-control").tagEditor("destroy");
+    }catch(e){
+
+    }
     $(".factory-config .form-control").tagEditor({placeholder: 'Enter tags ...'});
 }
