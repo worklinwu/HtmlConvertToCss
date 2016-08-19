@@ -29,7 +29,7 @@
         arr_no_extend_class: ["ui-box", "ui-tab"],  // 不需要继承的样式前缀, 正则
         arr_status_class: ["show", "hide", "hidden", "cur", "current", "open", "close", "active"],  // 状态样式
         arr_ignore_class: ["^\\.f-", "^\\.j-", "clearfix"],  // 不需要解析的样式前缀, 正则
-        less_style: false,
+        less_style: true,
         media_support: false,
         btn_analysis: "#j_btn_analysis",  // 解析代码按钮
         code_source: "#j_code_source",  // 输入的位置
@@ -97,31 +97,84 @@
             //     每个json对象有个"extend"的额外对象, 记录层级的深度.
             _this.options.beforeAnalysis && _this.options.beforeAnalysis.call(_this);
             // 判断是要输出那种风格的 css
+
+            convertHtmlToArr(_this.html_code_dom);
+            // 删除前面加了一层辅助 div (class="__temp__")
+            _this.result_json_arr.splice(0, 1);
+            _this.options.afterAnalysis && _this.options.afterAnalysis.call(_this);
+            // 4. 输出
+            //console.log(_this.result_json_arr);
+            _this.options.beforeRender && _this.options.beforeRender.call(_this);
+            // 解析结果
+            analysisArr();
+            // 过滤不要的数据
+            filterResult();
+            _this.result_css = _this.tools.arrUnique(_this.result_css); // 去重
+            // 输出
             if (_this.options.less_style) {
-                var domObj = getLessStyleObj(_this.html_code_dom);
-                _result = getLessStyleCss(domObj, 1);
+                // 输出为 less 风格样式
+                var lessStyleObj = getLessStyleObj(_this.result_css);
+                _result = getLessStyleCss(lessStyleObj, 0);
             } else {
-                convertHtmlToArr(_this.html_code_dom);
-                // 删除前面加了一层辅助 div (class="__temp__")
-                _this.result_json_arr.splice(0, 1);
-                _this.options.afterAnalysis && _this.options.afterAnalysis.call(_this);
-                // 4. 输出
-                //console.log(_this.result_json_arr);
-                _this.options.beforeRender && _this.options.beforeRender.call(_this);
-                // 解析结果
-                analysisArr();
-                // 过滤不要的数据
-                filterResult();
-                // 输出
-                _this.result_css = _this.tools.arrUnique(_this.result_css); // 去重
                 for (var k = 0; k < _this.result_css.length; k++) {
                     if (_this.result_css[k].trim() != "") {
                         _result = _result + _this.result_css[k] + " { } \r\n";
                     }
                 }
             }
+
             $code_result.val(_result);
             _this.options.afterRender && _this.options.afterRender.call(_this);
+
+            /**
+             * 把 dom 转换成对象, 这样做主要是为了好去重
+             * @param _result_css
+             * @returns {{}}
+             */
+            function getLessStyleObj(_result_css) {
+                var resultObj = {};
+                for (var i = 0; i < _result_css.length; i++) {
+                    if(_result_css[i].trim() == ""){
+                        continue;
+                    }
+                    var selectors = _result_css[i].trim().split(" "); // 打散
+                    var _temp_obj = resultObj;
+                    for (var j = 0; j < selectors.length; j++) {
+                        if (!_temp_obj[selectors[j]]) {
+                            _temp_obj[selectors[j]] = {};
+                        }
+                        _temp_obj = _temp_obj[selectors[j]];
+                    }
+                }
+                return resultObj;
+            }
+
+            /**
+             * 获取 Less/Scss 风格 css
+             * @param _obj
+             * @param _deep
+             * @returns {string}
+             */
+            function getLessStyleCss(_obj, _deep) {
+                var x_result = "";
+                var tempStr;
+                // 添加当前值
+                //_this.result_json_arr.push(result);
+                // 判断是否有子元素
+                if (getObjCount(_obj) > 0) {
+                    // 递归, 解析子元素
+                    for (var key in _obj) {
+                        if (_obj.hasOwnProperty(key)) {
+                            x_result += outputSpace(_deep * 4) + key + " { ";
+                            tempStr = getLessStyleCss(_obj[key], _deep + 1);
+                            x_result += tempStr ? "\r\n" + tempStr : "";
+                            x_result += tempStr ? outputSpace(_deep * 4) + "}\r\n" : "}\r\n";
+                        }
+                    }
+                }
+
+                return x_result;
+            }
 
             /**
              * 处理html, 生成对应的数组 [递归函数]
@@ -156,76 +209,6 @@
                         convertHtmlToArr($children.eq(i), _dom_extend);
                     }
                 }
-            }
-
-            /**
-             * 把 dom 转换成对象, 这样做主要是为了好去重
-             * @param _current_dom
-             * @returns {{}}
-             */
-            function getLessStyleObj(_current_dom) {
-                var $children;
-                var obj = {};
-
-                // 获取值
-                obj.id = _current_dom.attr("id");
-                obj.class = _current_dom.attr("class"); // 可能包含多个class
-                obj.class_arr = obj.class ? obj.class.split(/\s+/) : []; // 可能包含多个class
-                obj.tagName = _current_dom[0].tagName.toLowerCase();
-
-                obj.children = [];
-                $children = _current_dom.children();
-                if ($children.length > 0) {
-                    // 递归, 解析子元素
-                    for (var i = 0; i < $children.length; i++) {
-                        obj.children.push(getLessStyleObj($children.eq(i), obj));
-                    }
-                }
-
-                return obj;
-            }
-
-            /**
-             * 获取 Less/Scss 风格 css
-             * @param _dom_obj
-             * @param _deep
-             * @returns {string}
-             */
-            function getLessStyleCss(_dom_obj, _deep) {
-                var x_result = "";
-                // 添加当前值
-                //_this.result_json_arr.push(result);
-                x_result += outputSpace(_deep * 4);
-                if (_this.options.is_analysis_id && _dom_obj.id && _dom_obj.id != "" && !$.inArray(_dom_obj.id.substr(0, 2), ["j_", "j-", "js"]) > -1) {
-                    x_result += "#" + _dom_obj.id + " { \r\n";
-                } else
-                // 生成class规则  (如果包含忽略的元素, 用标签来继承)
-                if (_dom_obj.class && _dom_obj.class.trim() != "" && !_this.tools.inArrayByRegExp(_dom_obj.class.split(/\s+/)[0], _this.options.arr_ignore_class)) {
-                    if (_dom_obj.class_arr.length > 0) {
-                        x_result += "." + _dom_obj.class_arr[0] + " { \r\n";
-                    }
-                    // 多 class 处理
-                    for (var j = 1; j < _dom_obj.class_arr.length; j++) {
-                        // 解析class , 状态样式
-                        if ($.inArray(_dom_obj.class_arr[j], _this.options.arr_status_class) > -1 && _dom_obj.class_arr.length > 1) {
-                            x_result += outputSpace(4) + "&." + _dom_obj.class_arr[j] + " { }\r\n";
-                        }
-                    }
-                } else {
-                    // 标签名
-                    x_result += _dom_obj.tagName + " { \r\n";
-                }
-                // 判断是否有子元素
-                if (_dom_obj.children.length > 0) {
-                    _dom_obj.children = _this.tools.undulpicate(_dom_obj.children);
-                    // 递归, 解析子元素
-                    for (var i = 0; i < _dom_obj.children.length; i++) {
-                        x_result += getLessStyleCss(_dom_obj.children[i], _deep + 1);
-                    }
-                }
-                x_result += outputSpace(_deep * 4) + "}\r\n";
-
-                return x_result;
             }
 
             /**
@@ -348,18 +331,6 @@
             }
             return ret
         },
-        undulpicate: function (array) {
-            for (var i = 0; i < array.length; i++) {
-                for (var j = i + 1; j < array.length; j++) {
-                    //注意 ===
-                    if (JSON.stringify(array[i]) === JSON.stringify(array[j])) {
-                        array.splice(j, 1);
-                        j--;
-                    }
-                }
-            }
-            return array;
-        },
         inArrayByRegExp: function (val, regExpArr) {
             var result = false;
             for (var i = 0; i < regExpArr.length; i++) {
@@ -371,6 +342,18 @@
             return result;
         }
     };
+
+    function getObjCount(obj) {
+        if (Object.prototype.hasOwnProperty('__count__')) {
+            return this.__count__;
+        } else {
+            var count = 0;
+            for (var i in this) if (this.hasOwnProperty(i)) {
+                count++;
+            }
+            return count;
+        }
+    }
 
     window.CssFactory = CssFactory;
 })();
