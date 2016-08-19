@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="assets/script/jquery.tag-editor/jquery.tag-editor.css"/>
 </head>
 <body>
-
     <div class="m-cssfactory">
         <div class="code-panel ui-tab">
             <ul class="ui-tab-nav">
@@ -32,7 +31,7 @@
             <div class="ui-tab-content">
                 <article class="m-about-plugin">
                     <p>这是一个神（pǔ）奇（tōng）的工具。</p>
-                    <p>可将你贴进来的<code>HTML</code>代码转换成<code>Css</code>代码。如果你在使用中有遇到问题或有什么意见，可以到我的项目下Issues。  项目Github地址 <a href="https://github.com/worklinwu/HtmlConvertToCss" target="_blank">HtmlConvertToCss</a></p>
+                    <p>可将你贴进来的<code>HTML</code>代码转换成<code>Css</code>代码。如果你在使用中有遇到问题或有什么意见，可以到我的项目下Issues。 项目Github地址 <a href="https://github.com/worklinwu/HtmlConvertToCss" target="_blank">HtmlConvertToCss</a></p>
                     <p>文档参见 <a href="https://github.com/worklinwu/HtmlConvertToCss" target="_blank">HtmlConvertToCss</a></p>
                     <p>项目背后的故事 <a href="http://www.linwu.name/articles/csstools-htmlConvertToCss-intro.html">传送门</a></p>
                     <p>作者：<a href="http://www.linwu.name">拳头巴掌</a></p>
@@ -44,24 +43,39 @@
         </div>
         <div class="factory-config">
             <div class="ui-box">
-                <div class="ui-box-header">配置 <small></small></div>
+                <div class="ui-box-header">配置
+                    <small></small>
+                </div>
                 <div class="ui-box-body">
                     <form id="j_factory_config">
                         <div class="form-group">
-                            <label for="top_level_class">顶级样式关键字 <small>(正则  ， 注意转义)</small></label>
+                            <label for="top_level_class">顶级样式关键字
+                                <small>(正则 ， 注意转义)</small>
+                            </label>
                             <textarea id="top_level_class" class="form-control" spellcheck="false"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="no_extend_class">不继承的样式关键字 <small>(正则  ， 注意转义)</small></label>
+                            <label for="no_extend_class">不继承的样式关键字
+                                <small>(正则 ， 注意转义)</small>
+                            </label>
                             <textarea id="no_extend_class" class="form-control" spellcheck="false"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="status_class">状态样式<small></small></label>
+                            <label for="status_class">状态样式
+                                <small></small>
+                            </label>
                             <textarea id="status_class" class="form-control" spellcheck="false"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="ignore_class">忽略的样式 <small>(正则 ， 注意转义)</small></label>
+                            <label for="ignore_class">忽略的样式
+                                <small>(正则 ， 注意转义)</small>
+                            </label>
                             <textarea id="ignore_class" class="form-control" spellcheck="false"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="ignore_class">代码风格</label>
+                            <label class="ui-checkbox"><input type="checkbox" name="codestyle" value="less">Less/Scss</label>
+                            <label class="ui-checkbox"><input type="checkbox" name="codestyle" value="less">响应式支持</label>
                         </div>
                         <div class="control-group">
                             <button type="submit" class="btn btn-submit" id="j_btn_analysis">解析代码</button>
@@ -73,7 +87,7 @@
         </div>
     </div>
 
-    <script type="text/javascript" src="http://libs.baidu.com/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/script/jquery.js"></script>
     <script type="text/javascript" src="assets/script/codemirror/codemirror.js"></script>
     <script type="text/javascript" src="assets/script/codemirror/mode/xml/xml.js"></script>
     <script type="text/javascript" src="assets/script/cssFactory.js"></script>
@@ -91,7 +105,7 @@
             ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
             ds.charset = 'UTF-8';
             (document.getElementsByTagName('head')[0]
-                    || document.getElementsByTagName('body')[0]).appendChild(ds);
+            || document.getElementsByTagName('body')[0]).appendChild(ds);
         })();
     </script>
 </body>

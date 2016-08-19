@@ -9,7 +9,7 @@ html, body{ -webkit-overflow-scrolling:touch; }
 body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, textarea, p, blockquote, th, td, hr, button, article, aside, details, figcaption, figure, footer, header, menu, nav, section{ margin:0; padding:0 }
 article, aside, details, figcaption, figure, footer, header, menu, nav, section{ display:block }
 audio, canvas, video{ display:inline-block; *display:inline; *zoom:1 }
-body, button, input, select, textarea{ font:12px/1.5 tahoma, arial, "Hiragino Sans GB", \5b8b\4f53 }
+body, button, input, select, textarea{ font:14px/1.5 tahoma, arial, "Hiragino Sans GB", \5b8b\4f53 }
 input, select, textarea{ font-size:100% }
 table{ border-spacing:0; border-collapse:collapse }
 th{ text-align:inherit }
@@ -66,15 +66,17 @@ a:hover, a:active{ -webkit-tap-highlight-color:rgba(0, 0, 0, 0); }
 .m-cssfactory .code-panel .code-result.pastel-on-dark{ width:596px; border-left:solid 34px #34302f; background-color:#2c2827; color:#a6c6ff;resize:none; }
 .m-cssfactory .code-panel .code-result.pastel-on-dark::-webkit-scrollbar{ width:6px; border:0; background-color:transparent; }
 .m-cssfactory .code-panel .code-result.pastel-on-dark::-webkit-scrollbar-thumb{ border-radius:4px; background-color:rgba(130, 130, 130, .9); }
-.m-cssfactory .code-panel .btn-copy{position:absolute; top:10px; right:0; display:block; width:90px; text-align:center; border-bottom:1px solid #555; border-left:1px solid #555; background-color:#333; font:12px/26px 'Microsoft YaHei',sans-serif; color:#999; text-decoration:none; }
+.m-cssfactory .code-panel .btn-copy{position:absolute; top:10px; right:0; display:block; width:90px; text-align:center; border-bottom:1px solid #555; border-left:1px solid #555; background-color:#333; font:14px/26px 'Microsoft YaHei',sans-serif; color:#999; text-decoration:none; }
 .m-cssfactory .code-panel .btn-copy.active{}
 
 .m-cssfactory .factory-config{ display:inline; float:right; margin-top:30px; width:320px; background-color:#eee; }
 .m-cssfactory .ui-box .ui-box-header{ height:40px; color:#000; text-indent:10px; font:16px/40px 'Microsoft YaHei', sans-serif; }
 .m-cssfactory .ui-box-body{ padding:10px; }
 .m-cssfactory .factory-config .form-group{ margin-bottom:10px; }
-.m-cssfactory .factory-config .form-group label{ display:block; color:#333; font:12px/26px 'Microsoft YaHei', sans-serif; }
+.m-cssfactory .factory-config .form-group label{ display:block; color:#333; font:14px/26px 'Microsoft YaHei', sans-serif; }
 .m-cssfactory .factory-config .form-group label small{ color:#f55;}
+.m-cssfactory .factory-config .form-group .ui-checkbox{ display: inline-block; margin-right: 10px;}
+.m-cssfactory .factory-config .form-group .ui-checkbox input{ margin-right: 5px; }
 .m-cssfactory .factory-config .form-group .form-control{ height:30px; outline:0; box-sizing:border-box; padding:5px 8px; width:100%; border:1px solid #ddd; color:#333; font:14px/18px "Helvetica Neue", Helvetica, Tahoma, Arial, sans-serif; }
 .m-cssfactory .factory-config .control-group{ padding-top:30px; display:-webkit-box; display:box; }
 .m-cssfactory .factory-config .btn{ position:relative; display:block; outline:0; border:0; background-color:#f55; color:#fff; text-align:center; font:20px/50px 'Microsoft YaHei', sans-serif;; cursor:pointer; }
