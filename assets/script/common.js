@@ -198,7 +198,8 @@ function setDefaultValue() {
     $no_extend_class.val(input_default_config.no_extend_class);
     $status_class.val(input_default_config.status_class);
     $ignore_class.val(input_default_config.ignore_class);
-    // TODO
+    $lessStyle.prop("checked", input_default_config.less_style);
+    $selectorChild.prop("checked", input_default_config.selector_child);
     // jquery.tag-editor 初始化
     try {
         $(".factory-config .form-control").tagEditor("destroy");
