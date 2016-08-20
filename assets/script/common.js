@@ -3,6 +3,7 @@
  * author : linwu
  * datetime : 2015-1-22
  */
+
 var cssFactory;
 var editor_code_source;
 var $btn_analysis = $("#j_btn_analysis");
@@ -10,20 +11,28 @@ var $top_level_class = $("#top_level_class");
 var $no_extend_class = $("#no_extend_class");
 var $status_class = $("#status_class");
 var $ignore_class = $("#ignore_class");
+var $lessStyle = $("#lessstyle");
+var $selectorChild = $("#selector-child");
 var input_default_config = {
     "top_level_class": ["^\.m-"],
     "no_extend_class": ["ui-box", "ui-tab"],
     "status_class": ["show", "hide", "hidden", "cur", "current", "open", "close", "active"],
-    "ignore_class": ["^\.f-", "^\.j-", "clearfix"]
+    "ignore_class": ["^\.f-", "^\.j-", "clearfix"],
+    "less_style": false,
+    "selector_child": false
 };
 var input_config = {};
 
 $(function () {
+    // 初始化选项卡
     initTab();
+    // 初始化输入的编辑器
     initEditer();
+    // 初始化 Css 工厂
     initCssFactory();
+    // 初始化复制功能
     initZeroClipboard();
-
+    // 从缓存中读取配置文件
     if (window.localStorage) {
         if (localStorage.getItem("cssFactory_input_config")) {
             input_config = JSON.parse(localStorage.getItem("cssFactory_input_config"));
@@ -31,21 +40,24 @@ $(function () {
             $no_extend_class.val(input_config.no_extend_class);
             $status_class.val(input_config.status_class);
             $ignore_class.val(input_config.ignore_class);
+            input_config.less_style && $lessStyle.prop("checked", true);
+            input_config.selector_child && $selectorChild.prop("checked", true);
             // jquery.tag-editor 初始化
             $(".factory-config .form-control").tagEditor({placeholder: 'Enter tags ...'});
         } else {
             setDefaultValue();
         }
-    }else{
+    } else {
         setDefaultValue();
     }
 
-    $("#j_btn_reset").on("click",function () {
+    // 重置配置
+    $("#j_btn_reset").on("click", function () {
         setDefaultValue();
         localStorage.setItem("cssFactory_input_config", JSON.stringify(input_default_config));
     });
 
-
+    // 配置栏可用状态初始化
     $(".m-cssfactory .ui-tab-nav li").on("click", function () {
         var $this = $(this);
         if ($this.index() == 0) {
@@ -55,6 +67,7 @@ $(function () {
         }
     });
 
+    // 执行分析代码
     $btn_analysis.on("click", function () {
         var $this = $(this);
 
@@ -62,10 +75,14 @@ $(function () {
             top_level_class: $top_level_class.val(),
             no_extend_class: $no_extend_class.val(),
             status_class: $status_class.val(),
-            ignore_class: $ignore_class.val()
+            ignore_class: $ignore_class.val(),
+            less_style: $lessStyle.prop("checked"),
+            selector_child: $selectorChild.prop("checked"),
         };
+        // 在执行解析代码的时候才把配置写入本地存储
         localStorage.setItem("cssFactory_input_config", JSON.stringify(input_config));
 
+        // 设置按钮为不可用, 防止重复点击
         if (!$this.hasClass("disabled")) {
             $(".m-cssfactory .ui-tab-nav li:eq(1)").trigger("click");
         }
@@ -134,6 +151,7 @@ function initEditer() {
 function initCssFactory() {
     if (window.CssFactory) {
         cssFactory = new CssFactory({
+            // 编译前重置参数
             beforeAnalysis: function () {
                 var $top_level_class = $("#top_level_class");
                 var $no_extend_class = $("#no_extend_class");
@@ -144,13 +162,18 @@ function initCssFactory() {
                     arr_top_level_class: $top_level_class.val().replace("/\\/g", "\\\\").split(/\s*,\s*/),
                     arr_no_extend_class: $no_extend_class.val().split(/\s*,\s*/),
                     arr_status_class: $status_class.val().split(/\s*,\s*/),
-                    arr_ignore_class: $ignore_class.val().split(/\s*,\s*/)
+                    arr_ignore_class: $ignore_class.val().split(/\s*,\s*/),
+                    less_style: $lessStyle.prop("checked"),
+                    child_style: $selectorChild.prop("checked")
                 }, true);
             }
         });
     }
 }
 
+/**
+ * 初始化复制代码
+ */
 function initZeroClipboard() {
     var copy_btn = new ZeroClipboard(document.getElementById("j_btn_copy"));
 
@@ -167,15 +190,20 @@ function initZeroClipboard() {
     });
 }
 
+/**
+ * 设置配置的默认值
+ */
 function setDefaultValue() {
     $top_level_class.val(input_default_config.top_level_class);
     $no_extend_class.val(input_default_config.no_extend_class);
     $status_class.val(input_default_config.status_class);
     $ignore_class.val(input_default_config.ignore_class);
+    $lessStyle.prop("checked", input_default_config.less_style);
+    $selectorChild.prop("checked", input_default_config.selector_child);
     // jquery.tag-editor 初始化
-    try{
+    try {
         $(".factory-config .form-control").tagEditor("destroy");
-    }catch(e){
+    } catch (e) {
 
     }
     $(".factory-config .form-control").tagEditor({placeholder: 'Enter tags ...'});
