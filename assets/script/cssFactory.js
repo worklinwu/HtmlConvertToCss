@@ -29,8 +29,8 @@
         arr_no_extend_class: ["ui-box", "ui-tab"],  // 不需要继承的样式前缀, 正则
         arr_status_class: ["show", "hide", "hidden", "cur", "current", "open", "close", "active"],  // 状态样式
         arr_ignore_class: ["^\\.f-", "^\\.j-", "clearfix"],  // 不需要解析的样式前缀, 正则
-        less_style: true,
-        media_support: false,
+        less_style: false,
+        child_style: false,
         btn_analysis: "#j_btn_analysis",  // 解析代码按钮
         code_source: "#j_code_source",  // 输入的位置
         code_result: "#j_code_result",  // 输出的位置
@@ -100,7 +100,7 @@
 
             convertHtmlToArr(_this.html_code_dom);
             // 删除前面加了一层辅助 div (class="__temp__")
-            _this.result_json_arr.splice(0, 1);
+            // _this.result_json_arr.splice(0, 1);
             _this.options.afterAnalysis && _this.options.afterAnalysis.call(_this);
             // 4. 输出
             //console.log(_this.result_json_arr);
@@ -134,7 +134,7 @@
             function getLessStyleObj(_result_css) {
                 var resultObj = {};
                 for (var i = 0; i < _result_css.length; i++) {
-                    if(_result_css[i].trim() == ""){
+                    if (_result_css[i].trim() == "") {
                         continue;
                     }
                     var selectors = _result_css[i].trim().split(" "); // 打散
@@ -184,7 +184,9 @@
             function convertHtmlToArr(_current_dom, _dom_extend) {
                 var $children;
                 var result = {};
-                _dom_extend = _dom_extend ? _dom_extend : "";
+                var childSelector;
+                _dom_extend = (_dom_extend && _dom_extend != ".__temp__") ? _dom_extend : "";
+                childSelector = (_dom_extend && _this.options.child_style && !_this.options.less_style) ? " >" : "";
 
                 // 获取值
                 result.id = _current_dom.attr("id");
@@ -200,9 +202,9 @@
                 if ($children.length > 0) {
                     // 判断是用class来继承还是用tagname来继承
                     if (result.class && result.class != "") {
-                        _dom_extend = (_dom_extend + " ." + result.class.split(/\s+/)[0]).trim();
+                        _dom_extend = (_dom_extend + childSelector + " ." + result.class.split(/\s+/)[0]).trim();
                     } else {
-                        _dom_extend = (_dom_extend + " " + result.tagName).trim();
+                        _dom_extend = (_dom_extend + childSelector + " " + result.tagName).trim();
                     }
                     // 递归, 解析子元素
                     for (var i = 0; i < $children.length; i++) {
@@ -232,6 +234,7 @@
                     var cur_json = _this.result_json_arr[i]; // 当前节点
                     var cur_json_extend = cur_json.extend ? (cur_json.extend + " ") : ""; // 当前节点继承的节点
                     var class_arr = cur_json.class ? cur_json.class.split(/\s+/) : []; // 当前节点的 class
+                    var childSelector = (cur_json_extend && _this.options.child_style && !_this.options.less_style ? " > " : "");
                     // 按 ID > class > tagName 的顺序解析
                     // 是否解析ID
                     if (_this.options.is_analysis_id) {
@@ -245,21 +248,21 @@
                         for (var j = 0; j < class_arr.length; j++) {
                             // 解析class , 状态样式
                             if ($.inArray(class_arr[j], _this.options.arr_status_class) > -1 && class_arr.length > 1) {
-                                _this.result_css.push(cur_json_extend + " ." + class_arr[0] + "." + class_arr[j]);
+                                _this.result_css.push(cur_json_extend + childSelector + " ." + class_arr[0] + "." + class_arr[j]);
                             } else {
-                                _this.result_css.push(cur_json_extend + "." + class_arr[j]);
+                                _this.result_css.push(cur_json_extend + childSelector + "." + class_arr[j]);
                             }
                         }
                     } else {
                         // 标签名
-                        _this.result_css.push(cur_json_extend + cur_json.tagName);
+                        _this.result_css.push(cur_json_extend + childSelector + cur_json.tagName);
                     }
                     // 如果是a标签
                     if (cur_json.tagName == "a") {
                         if (class_arr[0] && class_arr[0] != "" && !_this.tools.inArrayByRegExp(class_arr[0], _this.options.arr_ignore_class) > -1) {
-                            _this.result_css.push(cur_json_extend + "." + class_arr[0] + ":hover");
+                            _this.result_css.push(cur_json_extend + childSelector + "." + class_arr[0] + ":hover");
                         } else {
-                            _this.result_css.push(cur_json_extend + cur_json.tagName + ":hover");
+                            _this.result_css.push(cur_json_extend + childSelector + cur_json.tagName + ":hover");
                         }
                     }
                 }

@@ -11,12 +11,15 @@ var $top_level_class = $("#top_level_class");
 var $no_extend_class = $("#no_extend_class");
 var $status_class = $("#status_class");
 var $ignore_class = $("#ignore_class");
+var $lessStyle = $("#lessstyle");
+var $selectorChild = $("#selector-child");
 var input_default_config = {
     "top_level_class": ["^\.m-"],
     "no_extend_class": ["ui-box", "ui-tab"],
     "status_class": ["show", "hide", "hidden", "cur", "current", "open", "close", "active"],
     "ignore_class": ["^\.f-", "^\.j-", "clearfix"],
-    "code_style": {lessStyle: false, mediaSupport: false}
+    "less_style": false,
+    "selector_child": false
 };
 var input_config = {};
 
@@ -37,7 +40,8 @@ $(function () {
             $no_extend_class.val(input_config.no_extend_class);
             $status_class.val(input_config.status_class);
             $ignore_class.val(input_config.ignore_class);
-            // TODO
+            input_config.less_style && $lessStyle.prop("checked", true);
+            input_config.selector_child && $selectorChild.prop("checked", true);
             // jquery.tag-editor 初始化
             $(".factory-config .form-control").tagEditor({placeholder: 'Enter tags ...'});
         } else {
@@ -71,7 +75,9 @@ $(function () {
             top_level_class: $top_level_class.val(),
             no_extend_class: $no_extend_class.val(),
             status_class: $status_class.val(),
-            ignore_class: $ignore_class.val()
+            ignore_class: $ignore_class.val(),
+            less_style: $lessStyle.prop("checked"),
+            selector_child: $selectorChild.prop("checked"),
         };
         // 在执行解析代码的时候才把配置写入本地存储
         localStorage.setItem("cssFactory_input_config", JSON.stringify(input_config));
@@ -156,7 +162,9 @@ function initCssFactory() {
                     arr_top_level_class: $top_level_class.val().replace("/\\/g", "\\\\").split(/\s*,\s*/),
                     arr_no_extend_class: $no_extend_class.val().split(/\s*,\s*/),
                     arr_status_class: $status_class.val().split(/\s*,\s*/),
-                    arr_ignore_class: $ignore_class.val().split(/\s*,\s*/)
+                    arr_ignore_class: $ignore_class.val().split(/\s*,\s*/),
+                    less_style: $lessStyle.prop("checked"),
+                    child_style: $selectorChild.prop("checked")
                 }, true);
             }
         });
