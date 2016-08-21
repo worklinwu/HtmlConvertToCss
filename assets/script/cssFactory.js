@@ -115,6 +115,12 @@
                 // 输出为 less 风格样式
                 var lessStyleObj = getLessStyleObj(_this.result_css);
                 _result = getLessStyleCss(lessStyleObj, 0);
+            } else if (_this.options.child_style) {
+                for (var m = 0; m < _this.result_css.length; m++) {
+                    if (_this.result_css[m].trim() != "") {
+                        _result = _result + (_this.result_css[m].split(" ").join(" > ")) + " { } \r\n";
+                    }
+                }
             } else {
                 for (var k = 0; k < _this.result_css.length; k++) {
                     if (_this.result_css[k].trim() != "") {
@@ -184,9 +190,7 @@
             function convertHtmlToArr(_current_dom, _dom_extend) {
                 var $children;
                 var result = {};
-                var childSelector;
                 _dom_extend = (_dom_extend && _dom_extend != ".__temp__") ? _dom_extend : "";
-                childSelector = (_dom_extend && _this.options.child_style && !_this.options.less_style) ? " >" : "";
 
                 // 获取值
                 result.id = _current_dom.attr("id");
@@ -202,9 +206,9 @@
                 if ($children.length > 0) {
                     // 判断是用class来继承还是用tagname来继承
                     if (result.class && result.class != "") {
-                        _dom_extend = (_dom_extend + childSelector + " ." + result.class.split(/\s+/)[0]).trim();
+                        _dom_extend = (_dom_extend + " ." + result.class.split(/\s+/)[0]).trim();
                     } else {
-                        _dom_extend = (_dom_extend + childSelector + " " + result.tagName).trim();
+                        _dom_extend = (_dom_extend + " " + result.tagName).trim();
                     }
                     // 递归, 解析子元素
                     for (var i = 0; i < $children.length; i++) {
@@ -234,7 +238,6 @@
                     var cur_json = _this.result_json_arr[i]; // 当前节点
                     var cur_json_extend = cur_json.extend ? (cur_json.extend + " ") : ""; // 当前节点继承的节点
                     var class_arr = cur_json.class ? cur_json.class.split(/\s+/) : []; // 当前节点的 class
-                    var childSelector = (cur_json_extend && _this.options.child_style && !_this.options.less_style ? " > " : "");
                     // 按 ID > class > tagName 的顺序解析
                     // 是否解析ID
                     if (_this.options.is_analysis_id) {
@@ -248,21 +251,21 @@
                         for (var j = 0; j < class_arr.length; j++) {
                             // 解析class , 状态样式
                             if ($.inArray(class_arr[j], _this.options.arr_status_class) > -1 && class_arr.length > 1) {
-                                _this.result_css.push(cur_json_extend + childSelector + " ." + class_arr[0] + "." + class_arr[j]);
+                                _this.result_css.push(cur_json_extend + " ." + class_arr[0] + "." + class_arr[j]);
                             } else {
-                                _this.result_css.push(cur_json_extend + childSelector + "." + class_arr[j]);
+                                _this.result_css.push(cur_json_extend + "." + class_arr[j]);
                             }
                         }
                     } else {
                         // 标签名
-                        _this.result_css.push(cur_json_extend + childSelector + cur_json.tagName);
+                        _this.result_css.push(cur_json_extend + cur_json.tagName);
                     }
                     // 如果是a标签
                     if (cur_json.tagName == "a") {
                         if (class_arr[0] && class_arr[0] != "" && !_this.tools.inArrayByRegExp(class_arr[0], _this.options.arr_ignore_class) > -1) {
-                            _this.result_css.push(cur_json_extend + childSelector + "." + class_arr[0] + ":hover");
+                            _this.result_css.push(cur_json_extend + "." + class_arr[0] + ":hover");
                         } else {
-                            _this.result_css.push(cur_json_extend + childSelector + cur_json.tagName + ":hover");
+                            _this.result_css.push(cur_json_extend + cur_json.tagName + ":hover");
                         }
                     }
                 }
